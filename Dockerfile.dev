@@ -1,0 +1,21 @@
+# 1. Use a lightweight official Node image
+FROM node:20-alpine
+
+# 2. Set the working directory inside the container
+WORKDIR /app
+
+# 3. Install the C++ build tools & Python INSIDE the container for node-gyp
+RUN apk add --no-cache python3 make g++
+
+# 4. Copy package files and install dependencies inside the container
+COPY package*.json ./
+RUN npm install
+
+# 5. Copy the rest of your React app source code
+COPY . .
+
+# 6. Expose the port React runs on
+EXPOSE 3000
+
+# 7. Start the local development server
+CMD ["npm", "start"]
